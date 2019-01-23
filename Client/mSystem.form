@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Client.mSystem">
+  <grid id="27dc6" binding="SystemPanel" layout-manager="GridLayoutManager" row-count="5" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="547" height="420"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <scrollpane id="6a073">
+        <constraints>
+          <grid row="0" column="0" row-span="5" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="15820" class="javax.swing.JTree" binding="information" custom-create="true">
+            <constraints/>
+            <properties>
+              <dropMode value="USE_SELECTION"/>
+              <editable value="true"/>
+            </properties>
+            <clientProperties>
+              <JTree.lineStyle class="java.lang.String" value=""/>
+            </clientProperties>
+          </component>
+        </children>
+      </scrollpane>
+      <component id="b8f0e" class="javax.swing.JButton" binding="exit">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <horizontalTextPosition value="0"/>
+          <text value="退出"/>
+        </properties>
+      </component>
+      <component id="e92be" class="javax.swing.JButton" binding="edit">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="修改"/>
+        </properties>
+      </component>
+      <component id="e2498" class="javax.swing.JButton" binding="delete">
+        <constraints>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="删除"/>
+        </properties>
+      </component>
+      <component id="96cb7" class="javax.swing.JButton" binding="add">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="添加"/>
+        </properties>
+      </component>
+      <component id="3f207" class="javax.swing.JButton" binding="search">
+        <constraints>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="搜索"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
