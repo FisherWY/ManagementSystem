@@ -1,3 +1,4 @@
+import Client.Auth;
 import Client.mSystem;
 import Controller.dbOperate;
 
@@ -11,24 +12,23 @@ public class main {
     public static void main(String args[]){
         dbOperate db = new dbOperate();
 
-//        Auth auth = new Auth();
-//        auth.setDb(db);
-//        JFrame frame = new JFrame("登录");
-//        frame.setContentPane(auth.AuthPanel);
-//        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//        frame.setLocation(500,500);
-//        frame.pack();
-//        frame.setVisible(true);
-
-        mSystem mSystem = new mSystem(db);
-//        mSystem.setDb(db);
+        Auth auth = new Auth();
+        auth.setDb(db);
         JFrame frame = new JFrame("登录");
-        frame.setContentPane(mSystem.SystemPanel);
+        frame.setContentPane(auth.AuthPanel);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLocation(500,500);
-        frame.setSize(500,400);
         frame.pack();
         frame.setVisible(true);
+
+//        mSystem mSystem = new mSystem(db);
+//        JFrame frame = new JFrame("登录");
+//        frame.setContentPane(mSystem.SystemPanel);
+//        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//        frame.setLocation(500,500);
+//        frame.setSize(500,400);
+//        frame.pack();
+//        frame.setVisible(true);
 
 
 //        if (db.openConnection()) {

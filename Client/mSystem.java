@@ -5,9 +5,14 @@ import Database.dbAuth;
 import Database.dbUser;
 
 import javax.swing.*;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
@@ -24,6 +29,8 @@ public class mSystem extends JFrame{
     private JButton add;
     private JButton search;
     private JTree information;
+    private JButton refresh;
+    private JTextField searchField;
 
     private dbOperate db = null;
     private dbAuth user = null;
@@ -38,10 +45,11 @@ public class mSystem extends JFrame{
                 dispose();
             }
         });
+        //添加按钮
         add.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Add add = new Add();
+                Add add = new Add(new dbUser());
                 add.setDb(db);
                 JFrame frame = new JFrame("添加");
                 frame.setContentPane(add.AddPanel);
@@ -50,6 +58,58 @@ public class mSystem extends JFrame{
                 frame.setSize(500,400);
                 frame.pack();
                 frame.setVisible(true);
+            }
+        });
+        //刷新按钮
+        refresh.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                init();
+                information.updateUI();
+            }
+        });
+        //修改
+        edit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) information.getLastSelectedPathComponent();
+                System.out.println("修改的节点：" + information.getSelectionPath());
+                if (node.getUserObject() instanceof dbUser) {
+                    dbUser obj = (dbUser) node.getUserObject();
+                    Add add = new Add(obj);
+                    add.setDb(db);
+                    JFrame frame = new JFrame("修改");
+                    frame.setContentPane(add.AddPanel);
+                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    frame.setLocation(500,500);
+                    frame.setSize(500,400);
+                    frame.pack();
+                    frame.setVisible(true);
+                }
+            }
+        });
+        //删除
+        delete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) information.getLastSelectedPathComponent();
+                System.out.println("删除的节点：" + information.getSelectionPath());
+                if (node.getUserObject() instanceof dbUser) {
+                    dbUser obj = (dbUser) node.getUserObject();
+                    if (db.delete(obj)) {
+                        JOptionPane.showMessageDialog(null, "删除成功", "成功", JOptionPane.PLAIN_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "删除失败", "失败", JOptionPane.PLAIN_MESSAGE);
+                    }
+
+                }
+            }
+        });
+        //搜索
+        search.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                findInTree(searchField.getText());
             }
         });
     }
@@ -71,9 +131,10 @@ public class mSystem extends JFrame{
     public void init() {
 //        String[] department = {"部门A","部门B","部门C","部门D","部门E"};
 
-        information.clearSelection();
+//        information.clearSelection();
 
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("员工信息");
+        rootNode.removeAllChildren();
 
         DefaultMutableTreeNode departmentNode0 = new DefaultMutableTreeNode("部门A");
         DefaultMutableTreeNode departmentNode1 = new DefaultMutableTreeNode("部门B");
@@ -88,7 +149,7 @@ public class mSystem extends JFrame{
         rootNode.add(departmentNode4);
 
 
-        LinkedList<Object> result = db.SelectAll("user");
+        LinkedList<Object> result = db.Select("user", "Disable", "0");
 
         while (result.size() != 0) {
             Object obj = result.getFirst();
@@ -120,5 +181,40 @@ public class mSystem extends JFrame{
         information = new JTree(rootNode);
         information.setShowsRootHandles(true);
         information.setEditable(false);
+    }
+
+    private void findInTree(String str) {
+        Object root = information.getModel().getRoot();
+        TreePath treePath = new TreePath(root);
+        treePath = findInPath(treePath, str);
+        if (treePath != null) {
+            information.setSelectionPath(treePath);
+            information.scrollPathToVisible(treePath);
+        }
+    }
+
+    private TreePath findInPath(TreePath treePath, String str) {
+        Object object = treePath.getLastPathComponent();
+        if (object == null) {
+            return null;
+        }
+
+        String value = object.toString();
+        if (str.equals(value)) {
+            return treePath;
+        } else {
+            TreeModel model = information.getModel();
+            int n = model.getChildCount(object);
+            for (int i = 0; i < n; i++) {
+                Object child = model.getChild(object, i);
+                TreePath path = treePath.pathByAddingChild(child);
+
+                path = findInPath(path, str);
+                if (path != null) {
+                    return path;
+                }
+            }
+            return null;
+        }
     }
 }

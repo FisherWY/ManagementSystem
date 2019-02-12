@@ -18,10 +18,16 @@ public class Add {
     private JComboBox comboBox1;
     private JButton add;
     private JButton reset;
+    private dbUser user;
 
     private dbOperate db = null;
 
-    public Add() {
+    public Add(dbUser obj) {
+        this.user = obj;
+        if (obj.getUUID()!=null) {
+            textField1.setText(obj.getUser_name());
+            comboBox1.setSelectedItem(obj.getDepartment());
+        }
         //重置按钮
         reset.addActionListener(new ActionListener() {
             @Override
@@ -37,15 +43,28 @@ public class Add {
                 if (textField1.getText().equals("") || comboBox1.getSelectedIndex()==0) {
                     JOptionPane.showMessageDialog(null, "用户名或部门不能为空", "失败", JOptionPane.PLAIN_MESSAGE);
                 } else {
-                    dbUser user = new dbUser();
-                    user.setUUID(UUID.randomUUID().toString());
-                    user.setUser_name(textField1.getText());
-                    user.setDepartment(comboBox1.getSelectedItem().toString());
-                    user.setDisable(0);
-                    if (!db.Insert(user)) {
-                        JOptionPane.showMessageDialog(null, "添加成功", "成功", JOptionPane.PLAIN_MESSAGE);
+                    if (user.getUUID()!=null) {
+                        dbUser newuser = new dbUser();
+                        newuser.setUUID(user.getUUID());
+                        newuser.setDisable(user.getDisable());
+                        newuser.setUser_name(textField1.getText());
+                        newuser.setDepartment(comboBox1.getSelectedItem().toString());
+                        if (db.update(user, newuser)) {
+                            JOptionPane.showMessageDialog(null, "修改成功", "成功", JOptionPane.PLAIN_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "修改失败", "失败", JOptionPane.PLAIN_MESSAGE);
+                        }
+
                     } else {
-                        JOptionPane.showMessageDialog(null, "添加失败", "失败", JOptionPane.PLAIN_MESSAGE);
+                        user.setUUID(UUID.randomUUID().toString());
+                        user.setUser_name(textField1.getText());
+                        user.setDepartment(comboBox1.getSelectedItem().toString());
+                        user.setDisable(0);
+                        if (!db.Insert(user)) {
+                            JOptionPane.showMessageDialog(null, "添加成功", "成功", JOptionPane.PLAIN_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "添加失败", "失败", JOptionPane.PLAIN_MESSAGE);
+                        }
                     }
                 }
 
