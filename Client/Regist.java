@@ -17,12 +17,18 @@ public class Regist extends JFrame{
     private JTextField account;
     private JPasswordField password;
     private JSlider slider1;
-    public JPanel RegistPanel;
+    private JPanel RegistPanel;
+    private JFrame frame;
 
     private dbOperate db = null;
+    private dbAuth admin = null;
 
     public void setDb(dbOperate db) {
         this.db = db;
+    }
+
+    public void setAdmin(dbAuth admin) {
+        this.admin = admin;
     }
 
     public Regist() {
@@ -48,7 +54,10 @@ public class Regist extends JFrame{
 
                     if (!db.regist(user)) {
                         JOptionPane.showMessageDialog(null, "注册成功", "成功", JOptionPane.PLAIN_MESSAGE);
-//                        dispose();
+                        Auth auth = new Auth();
+                        auth.setDb(db);
+                        auth.run();
+                        frame.dispose();
                     } else {
                         JOptionPane.showMessageDialog(null, "注册失败", "错误", JOptionPane.PLAIN_MESSAGE);
 //                        dispose();
@@ -63,12 +72,20 @@ public class Regist extends JFrame{
         exit1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                mSystem.exit();
-//                PlatformUI.getWorkbench().getActiveWorkbenchWindow().close();
-                java.lang.System.out.println("退出按钮");
-                setVisible(false);
-                dispose();
+                Auth auth = new Auth();
+                auth.setDb(db);
+                auth.run();
+                frame.dispose();
             }
         });
+    }
+
+    public void run() {
+        frame = new JFrame("注册");
+        frame.setContentPane(this.RegistPanel);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setLocation(500,500);
+        frame.pack();
+        frame.setVisible(true);
     }
 }

@@ -1,6 +1,7 @@
 package Client;
 
 import Controller.dbOperate;
+import Database.dbAuth;
 import Database.dbUser;
 
 import javax.swing.*;
@@ -13,12 +14,15 @@ import java.util.UUID;
  * @Date 2019/1/19 22:56
  **/
 public class Add {
-    public JPanel AddPanel;
+    private JPanel AddPanel;
     private JTextField textField1;
     private JComboBox comboBox1;
     private JButton add;
     private JButton reset;
+    private JButton back;
+    private JFrame frame;
     private dbUser user;
+    private dbAuth admin = null;
 
     private dbOperate db = null;
 
@@ -51,10 +55,13 @@ public class Add {
                         newuser.setDepartment(comboBox1.getSelectedItem().toString());
                         if (db.update(user, newuser)) {
                             JOptionPane.showMessageDialog(null, "修改成功", "成功", JOptionPane.PLAIN_MESSAGE);
+                            mSystem mSystem = new mSystem(db);
+//                            mSystem.setAdmin(db.getAdmin());
+                            mSystem.run();
+                            frame.dispose();
                         } else {
                             JOptionPane.showMessageDialog(null, "修改失败", "失败", JOptionPane.PLAIN_MESSAGE);
                         }
-
                     } else {
                         user.setUUID(UUID.randomUUID().toString());
                         user.setUser_name(textField1.getText());
@@ -62,17 +69,43 @@ public class Add {
                         user.setDisable(0);
                         if (!db.Insert(user)) {
                             JOptionPane.showMessageDialog(null, "添加成功", "成功", JOptionPane.PLAIN_MESSAGE);
+                            mSystem mSystem = new mSystem(db);
+//                            mSystem.setAdmin(db.getAdmin());
+                            mSystem.run();
+                            frame.dispose();
                         } else {
                             JOptionPane.showMessageDialog(null, "添加失败", "失败", JOptionPane.PLAIN_MESSAGE);
                         }
                     }
                 }
-
+            }
+        });
+        //返回
+        back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mSystem mSystem = new mSystem(db);
+                mSystem.run();
+                frame.dispose();
             }
         });
     }
 
     public void setDb(dbOperate db) {
         this.db = db;
+    }
+
+    public void setAdmin(dbAuth admin) {
+        this.admin = admin;
+    }
+
+    public void run(String tittle) {
+        frame = new JFrame(tittle);
+        frame.setContentPane(this.AddPanel);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setLocation(500,500);
+        frame.setSize(500,400);
+        frame.pack();
+        frame.setVisible(true);
     }
 }

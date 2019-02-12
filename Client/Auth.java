@@ -19,7 +19,8 @@ public class Auth extends JFrame{
     private JLabel 密码;
     private JTextField account;
     private JPasswordField password;
-    public JPanel AuthPanel;
+    private JPanel AuthPanel;
+    private JFrame frame;
 
     private dbOperate db = null;
 
@@ -34,19 +35,21 @@ public class Auth extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 Regist regist = new Regist();
                 regist.setDb(db);
-                JFrame frame = new JFrame("注册");
-                frame.setContentPane(regist.RegistPanel);
-                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                frame.setLocation(500,500);
-                frame.pack();
-                frame.setVisible(true);
+                regist.run();
+                frame.dispose();
+//                JFrame frame = new JFrame("注册");
+//                frame.setContentPane(regist.RegistPanel);
+//                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//                frame.setLocation(500,500);
+//                frame.pack();
+//                frame.setVisible(true);
             }
         });
         //退出按钮
         exit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
+                frame.dispose();
             }
         });
         //登录按钮
@@ -72,18 +75,19 @@ public class Auth extends JFrame{
 //                        dispose();
                         //登陆成功，拉起主界面窗口
                         mSystem mSystem = new mSystem(db);
-                        mSystem.setUser(user);
+//                        mSystem.setAdmin(db.getAdmin());
+                        mSystem.run();
 //                        mSystem.setDb(db);
-                        JFrame frame = new JFrame("信息管理系统");
-                        frame.setSize(500,400);
-                        frame.setContentPane(mSystem.SystemPanel);
-                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        frame.setLocation(500,500);
-                        frame.pack();
-                        frame.setVisible(true);
+//                        JFrame frame = new JFrame("信息管理系统");
+//                        frame.setSize(500,400);
+//                        frame.setContentPane(mSystem.SystemPanel);
+//                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//                        frame.setLocation(500,500);
+//                        frame.pack();
+//                        frame.setVisible(true);
 
-                        dispose();
-                        setVisible(false);
+                        frame.dispose();
+//                        setVisible(false);
 //                        dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING) );
                     } else {
                         JOptionPane.showMessageDialog(null, "用户名或密码错误", "登陆失败", JOptionPane.PLAIN_MESSAGE);
@@ -94,5 +98,14 @@ public class Auth extends JFrame{
                 }
             }
         });
+    }
+
+    public void run() {
+        frame = new JFrame("登录");
+        frame.setContentPane(this.AuthPanel);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setLocation(500,500);
+        frame.pack();
+        frame.setVisible(true);
     }
 }

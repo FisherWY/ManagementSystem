@@ -30,6 +30,7 @@ public class dbOperate {
     //结果集
     private ResultSet resultSet;
     private LinkedList<Object> result = new LinkedList<Object>();
+    private dbAuth admin;
 
     public dbOperate() {
         openConnection();
@@ -69,9 +70,10 @@ public class dbOperate {
                     String psw = ((dbAuth) obj).getPassword();
                     int disable = ((dbAuth) obj).getDisable();
                     if (dbobj.getPassword().equals(psw) && disable==0) {
+                        admin = (dbAuth) obj;
                         ((dbAuth) obj).updateTime();
                         Update("auth", "Last_login", ((dbAuth) obj).getLast_login(), "User", ((dbAuth) obj).getUser());
-                        return  true;
+                        return true;
                     }
                 }
                 result.removeFirst();
@@ -316,5 +318,9 @@ public class dbOperate {
 
     public LinkedList<Object> getResult() {
         return result;
+    }
+
+    public dbAuth getAdmin() {
+        return admin;
     }
 }

@@ -14,12 +14,13 @@ public class main {
 
         Auth auth = new Auth();
         auth.setDb(db);
-        JFrame frame = new JFrame("登录");
-        frame.setContentPane(auth.AuthPanel);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setLocation(500,500);
-        frame.pack();
-        frame.setVisible(true);
+        auth.run();
+//        JFrame frame = new JFrame("登录");
+//        frame.setContentPane(auth.AuthPanel);
+//        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//        frame.setLocation(500,500);
+//        frame.pack();
+//        frame.setVisible(true);
 
 //        mSystem mSystem = new mSystem(db);
 //        JFrame frame = new JFrame("登录");
