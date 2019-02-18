@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 /**
  * @Author Fisher
  * @Date 2019/1/19 20:55
+ *
+ * 注册管理员窗口
  **/
 public class Regist extends JFrame{
     private JButton exit1;
@@ -32,11 +34,14 @@ public class Regist extends JFrame{
     }
 
     public Regist() {
+        //设置滑动条鼠标悬停提示按钮
+        slider1.setToolTipText("权限等级为0时只能进行查看，等级为1时可以进行增加和修改，等级为2时能增删改查");
+
         //注册按钮
         regist.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                java.lang.System.out.println("注册按钮");
+                //表单验证
                 if (account.getText().length()!=0 && password.getText().length()!=0) {
 
                     //创建一个新的账号对象
@@ -60,7 +65,6 @@ public class Regist extends JFrame{
                         frame.dispose();
                     } else {
                         JOptionPane.showMessageDialog(null, "注册失败", "错误", JOptionPane.PLAIN_MESSAGE);
-//                        dispose();
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "用户名或密码为空", "输入错误", JOptionPane.PLAIN_MESSAGE);

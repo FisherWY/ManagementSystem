@@ -8,6 +8,8 @@ import java.util.Date;
 /**
  * @Author Fisher
  * @Date 2019/1/18 20:11
+ *
+ * 管理员类
  **/
 public class dbAuth {
     //账户名

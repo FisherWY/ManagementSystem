@@ -1,77 +1,43 @@
 import Client.Auth;
-import Client.mSystem;
 import Controller.dbOperate;
 
-import javax.swing.*;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Properties;
 
 /**
  * @Author Fisher
  * @Date 2019/1/17 20:32
  **/
+
 public class main {
     public static void main(String args[]){
-        dbOperate db = new dbOperate();
+        try {
+            //加载配置文件
+            URL configPath = ClassLoader.getSystemResource("config.properties");
+            Properties config = new Properties();
+            InputStream input = new BufferedInputStream(new FileInputStream(configPath.getPath()));
+            config.load(input);
 
-        Auth auth = new Auth();
-        auth.setDb(db);
-        auth.run();
-//        JFrame frame = new JFrame("登录");
-//        frame.setContentPane(auth.AuthPanel);
-//        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//        frame.setLocation(500,500);
-//        frame.pack();
-//        frame.setVisible(true);
+            //读取配置文件
+            String user = config.getProperty("user");
+            String psw = config.getProperty("psw");
+            String driver = config.getProperty("driver");
+            String ip = config.getProperty("ip");
+            String port = config.getProperty("port");
+            String dbname = config.getProperty("dbname");
 
-//        mSystem mSystem = new mSystem(db);
-//        JFrame frame = new JFrame("登录");
-//        frame.setContentPane(mSystem.SystemPanel);
-//        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//        frame.setLocation(500,500);
-//        frame.setSize(500,400);
-//        frame.pack();
-//        frame.setVisible(true);
+            //建立数据库连接池
+            dbOperate db = new dbOperate(user, psw, driver, ip, port, dbname);
 
-
-//        if (db.openConnection()) {
-//            mSystem.out.println("connected");
-//
-//            dbAuth user = new dbAuth("ddd","asdasda","null",0,0);
-//            dbAuth newuser = new dbAuth("aaa", "53245325", "null", 1, 1);
-
-//            user.encryptPsw();
-
-            //更新信息
-//            if (db.update(user,newuser)) {
-//                mSystem.out.println("Updated");
-//            } else {
-//                mSystem.out.println("not Updated");
-//            }
-
-            //注册账号
-//            if (!db.regist(user)) {
-//                mSystem.out.println("registed");
-//            } else {
-//                mSystem.out.println("not registed");
-//            }
-
-            //登录
-//            if (db.login(user)) {
-//                mSystem.out.println("login");
-//            } else {
-//                mSystem.out.println("not login");
-//            }
-//
-//            //删除
-//            if (db.delete(user)) {
-//                mSystem.out.println("deleted");
-//            } else {
-//                mSystem.out.println("not deleted");
-//            }
-
-
-
-//        } else {
-//            mSystem.out.println("not connected");
-//        }
+            //装载程序
+            Auth auth = new Auth();
+            auth.setDb(db);
+            auth.run();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -10,13 +10,15 @@ import java.awt.event.ActionListener;
 /**
  * @Author Fisher
  * @Date 2019/1/19 16:48
+ *
+ * 用户登录窗口，程序运行的初始界面
  **/
 public class Auth extends JFrame{
     private JButton regist;
     private JButton login;
     private JButton exit;
-    private JLabel 账号名;
-    private JLabel 密码;
+    private JLabel AccountLabel;
+    private JLabel PswLabel;
     private JTextField account;
     private JPasswordField password;
     private JPanel AuthPanel;
@@ -37,12 +39,6 @@ public class Auth extends JFrame{
                 regist.setDb(db);
                 regist.run();
                 frame.dispose();
-//                JFrame frame = new JFrame("注册");
-//                frame.setContentPane(regist.RegistPanel);
-//                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//                frame.setLocation(500,500);
-//                frame.pack();
-//                frame.setVisible(true);
             }
         });
         //退出按钮
@@ -56,10 +52,8 @@ public class Auth extends JFrame{
         login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                java.lang.mSystem.out.println("登录按钮");
                 if (account.getText().length()!=0 && password.getText().length()!=0) {
-
-                    //创建一个对象
+                    //创建一个登录对象
                     dbAuth user = new dbAuth();
                     user.setUser(account.getText());
                     user.setPassword(password.getText());
@@ -67,31 +61,16 @@ public class Auth extends JFrame{
                     user.encryptPsw();
 
                     //清空输入框
-//                    account.setText("");
                     password.setText("");
 
+                    //登录
                     if (db.login(user)) {
-//                        JOptionPane.showMessageDialog(null, "注册成功", "成功", JOptionPane.PLAIN_MESSAGE);
-//                        dispose();
                         //登陆成功，拉起主界面窗口
                         mSystem mSystem = new mSystem(db);
-//                        mSystem.setAdmin(db.getAdmin());
                         mSystem.run();
-//                        mSystem.setDb(db);
-//                        JFrame frame = new JFrame("信息管理系统");
-//                        frame.setSize(500,400);
-//                        frame.setContentPane(mSystem.SystemPanel);
-//                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//                        frame.setLocation(500,500);
-//                        frame.pack();
-//                        frame.setVisible(true);
-
                         frame.dispose();
-//                        setVisible(false);
-//                        dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING) );
                     } else {
                         JOptionPane.showMessageDialog(null, "用户名或密码错误", "登陆失败", JOptionPane.PLAIN_MESSAGE);
-//                        dispose();
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "用户名或密码为空", "输入错误", JOptionPane.PLAIN_MESSAGE);

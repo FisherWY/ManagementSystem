@@ -5,7 +5,6 @@ import Database.*;
 import Utils.ConnectionPool;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -14,13 +13,13 @@ import java.util.LinkedList;
  **/
 public class dbOperate {
     //数据库用户名
-    private String user = "fisher";
+    private String user;
     //数据库密码
-    private String psw = "12345678";
+    private String psw;
     //数据库驱动
-    private String driver = "com.mysql.cj.jdbc.Driver";
+    private String driver;
     //数据库url
-    private String url = "jdbc:mysql://127.0.0.1:3306/test?serverTimezone=GMT%2b8";
+    private String url;
     //连接池
     private ConnectionPool db = null;
     //数据库连接
@@ -36,9 +35,10 @@ public class dbOperate {
         openConnection();
     }
 
-    public dbOperate(String user, String psw, String ip, String port, String db) {
+    public dbOperate(String user, String psw, String driver, String ip, String port, String db) {
         this.user = user;
         this.psw = psw;
+        this.driver = driver;
         this.url = "jdbc:mysql://" + ip + ":" + port + "/" + db + "?serverTimezone=GMT%2b8";
         openConnection();
     }
@@ -57,10 +57,9 @@ public class dbOperate {
         }
     }
 
-    //登录
+    //登录模块
     public boolean login(dbAuth dbobj) {
         try {
-//            resultSet = allSelect("account");
             conditionSelect("auth","User", dbobj.getUser());
 
             //如果用户存在且没有被禁用
@@ -85,7 +84,7 @@ public class dbOperate {
         return false;
     }
 
-    //注册
+    //注册模块
     public boolean regist(Object dbobj) {
         if (Insert(dbobj)) {
             return true;
@@ -94,7 +93,7 @@ public class dbOperate {
         }
     }
 
-    //更新
+    //更新模块
     public boolean update(Object dbobj, Object newdbobj) {
         if (dbobj instanceof dbAuth && newdbobj instanceof dbAuth) {
             if (!((dbAuth) dbobj).getPassword().equals(((dbAuth) newdbobj).getPassword())) {
@@ -120,14 +119,12 @@ public class dbOperate {
         }
     }
 
-    //删除
+    //删除模块
     public boolean delete(Object obj) {
         if (obj instanceof dbAuth) {
             return Update("auth", "Disable", "1", "User", ((dbAuth) obj).getUser());
-//            return Delete("auth", "User", ((dbAuth) obj).getUser());
         } else if (obj instanceof dbUser) {
             return Update("user", "Disable", "1", "UUID", ((dbUser) obj).getUUID());
-//            return Delete("user", "UUID", ((dbUser) obj).getUUID());
         } else {
             return false;
         }
@@ -142,6 +139,7 @@ public class dbOperate {
         }
     }
 
+    //查询全表模块
     public LinkedList<Object> SelectAll(String table) {
         if (allSelect(table)) {
             return result;
@@ -210,10 +208,6 @@ public class dbOperate {
             connection = db.getConnection();
             sql = connection.createStatement();
 
-//            sql = connection.prepareStatement("select * from " + table);
-//            ((PreparedStatement) sql).setString(1, table);
-//            resultSet =  ((PreparedStatement) sql).executeQuery();
-
             String query = "select * from " + table;
             resultSet = sql.executeQuery(query);
 
@@ -247,7 +241,6 @@ public class dbOperate {
             e.printStackTrace();
             return false;
         }
-//        return null;
     }
 
     //向表中插入值,type为0是账号密码表，type为1是用户信息表
@@ -316,10 +309,12 @@ public class dbOperate {
         return false;
     }
 
+    //获取查询结果
     public LinkedList<Object> getResult() {
         return result;
     }
 
+    //获取当前管理员身份
     public dbAuth getAdmin() {
         return admin;
     }

@@ -3,6 +3,8 @@ package Database;
 /**
  * @Author Fisher
  * @Date 2019/1/18 20:12
+ *
+ * 员工类
  **/
 public class dbUser {
     //用户信息唯一标识码

@@ -7,10 +7,16 @@ import Utils.ConnectionPool;
  * @Date 2019/1/17 20:42
  **/
 public class dbConnection {
-    private String user = "fisher";
-    private String psw = "12345678";
-    private String driver = "com.mysql.cj.jdbc.Driver";
-    private String url = "jdbc:mysql://127.0.0.1:3306/test?serverTimezone=GMT%2b8";
+//    private String user = "fisher";
+//    private String psw = "12345678";
+//    private String driver = "com.mysql.cj.jdbc.Driver";
+//    private String url = "jdbc:mysql://127.0.0.1:3306/test?serverTimezone=GMT%2b8";
+
+    private String user;
+    private String psw;
+    private String driver;
+    private String url;
+
     //连接池
     private ConnectionPool pool = null;
     private boolean status = false;
