@@ -54,6 +54,7 @@ public class Add {
                 if (textField1.getText().equals("") || comboBox1.getSelectedIndex()==0) {
                     JOptionPane.showMessageDialog(null, "用户名或部门不能为空", "失败", JOptionPane.PLAIN_MESSAGE);
                 } else { //检查输入成功
+                    System.out.println("添加的信息：" + textField1.getText() + "  " + comboBox1.getSelectedItem().toString());
                     //修改员工信息
                     if (user.getUUID()!=null) {
                         dbUser newuser = new dbUser();

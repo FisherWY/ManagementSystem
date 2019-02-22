@@ -39,7 +39,9 @@ public class dbOperate {
         this.user = user;
         this.psw = psw;
         this.driver = driver;
-        this.url = "jdbc:mysql://" + ip + ":" + port + "/" + db + "?serverTimezone=GMT%2b8";
+//        this.url = "jdbc:mysql://" + ip + ":" + port + "/" + db;
+//        在连接云服务器的数据库时，需要传递时区参数以及数据编码
+        this.url = "jdbc:mysql://" + ip + ":" + port + "/" + db + "?serverTimezone=GMT%2b8&useUnicode=true&characterEncoding=utf8";
         openConnection();
     }
 
